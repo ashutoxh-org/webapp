@@ -7,11 +7,9 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Queue;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,6 +44,16 @@ public class HealthController {
 
     @DeleteMapping("/healthz")
     public ResponseEntity<String> deleteHealth() {
+        return getMethodNotAllowedResponse();
+    }
+
+    @RequestMapping(method = RequestMethod.HEAD, value = "/healthz")
+    public ResponseEntity<String> headHealth() {
+        return getMethodNotAllowedResponse();
+    }
+
+    @RequestMapping(method = RequestMethod.OPTIONS, value = "/healthz")
+    public ResponseEntity<String> optionsHealth() {
         return getMethodNotAllowedResponse();
     }
 
