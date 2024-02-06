@@ -23,6 +23,5 @@ cat /opt/homebrew/var/postgresql@14/pg_hba.conf
 ```
 - Set DB connection timeout to 10 secs via HikariCP, the default connection pool in Spring Boot
 - Able to start the application even if DB is down [Stackoverflow](https://stackoverflow.com/a/60348220)
-  =======
-# API part of Cloud Native Application
-CSYE 6225:  Network Structure & Cloud Computing (Spring 2024) - Prof. Tejas Parikh
+
+### Assignment 2
