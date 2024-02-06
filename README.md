@@ -25,3 +25,7 @@ cat /opt/homebrew/var/postgresql@14/pg_hba.conf
 - Able to start the application even if DB is down [Stackoverflow](https://stackoverflow.com/a/60348220)
 
 ### Assignment 2
+Notes:
+- Handled: Get 503 when DB is down during authentication/querying the DB instead of 4XX
+- Added Swagger docs for better readability
+- Added Custom Exception and Global Exception handler for cleaner code

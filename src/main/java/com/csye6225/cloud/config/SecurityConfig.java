@@ -1,4 +1,4 @@
-package com.csye6225.cloud.security;
+package com.csye6225.cloud.config;
 
 import com.csye6225.cloud.model.User;
 import com.csye6225.cloud.repository.UserRepository;

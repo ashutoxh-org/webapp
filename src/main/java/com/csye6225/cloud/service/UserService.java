@@ -25,6 +25,7 @@ public class UserService {
 
     /**
      * Get requesting user's details
+     *
      * @return UserResponseDTO
      */
     public UserResponseDTO getUser() {
@@ -36,7 +37,8 @@ public class UserService {
 
     /**
      * Create a user
-     * @param createUserRequestDTO (Create user request DTO)
+     *
+     * @param createUserRequestDTO obj
      * @return UserResponseDTO
      */
     public UserResponseDTO createUser(CreateUserRequestDTO createUserRequestDTO) {
@@ -52,7 +54,8 @@ public class UserService {
 
     /**
      * Update a user
-     * @param updateUserRequestDTO (Update user request DTO)
+     *
+     * @param updateUserRequestDTO obj
      * @return UserResponseDTO
      */
     public UserResponseDTO updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
@@ -67,7 +70,8 @@ public class UserService {
 
     /**
      * Get UserResponseDTO obj from User obj
-     * @param user
+     *
+     * @param user obj
      * @return UserResponseDTO
      */
     private UserResponseDTO getUserResponseFromUser(User user) {
@@ -83,7 +87,8 @@ public class UserService {
 
     /**
      * Get User obj from CreateUserRequestDTO
-     * @param createUserRequestDTO
+     *
+     * @param createUserRequestDTO obj
      * @return User
      */
     private User getUserFromCreateRequest(CreateUserRequestDTO createUserRequestDTO) {
@@ -97,7 +102,8 @@ public class UserService {
 
     /**
      * Get User obj from UpdateUserRequestDTO
-     * @param updateUserRequestDTO
+     *
+     * @param updateUserRequestDTO obj
      * @return User
      */
     private User getUserFromUpdateRequest(UpdateUserRequestDTO updateUserRequestDTO) {
