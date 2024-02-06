@@ -25,6 +25,8 @@ public class UserController {
     @GetMapping(value = "/v1/user/self", produces = "application/json")
     @Operation(summary = "Get user")
     @ApiResponse(responseCode = "200", description = "Get user")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "401", description = "Unauthorised")
     public ResponseEntity<UserResponseDTO> getUser() {
         UserResponseDTO userResponseDTO = userService.getUser();
         HttpHeaders headers = Util.getRequiredHeaders();
@@ -34,6 +36,7 @@ public class UserController {
     @PostMapping(value = "/v1/user", produces = "application/json")
     @Operation(summary = "Create user")
     @ApiResponse(responseCode = "201", description = "Create user")
+    @ApiResponse(responseCode = "400", description = "Bad request")
     public ResponseEntity<UserResponseDTO> createUser(@Validated @RequestBody CreateUserRequestDTO createUserRequestDTO) {
         UserResponseDTO userResponseDTO = userService.createUser(createUserRequestDTO);
         HttpHeaders headers = Util.getRequiredHeaders();
@@ -43,6 +46,8 @@ public class UserController {
     @PutMapping(value = "/v1/user/self", produces = "application/json")
     @Operation(summary = "Update user")
     @ApiResponse(responseCode = "200", description = "Update user")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "401", description = "Unauthorised")
     public ResponseEntity<UserResponseDTO> updateUser(@Validated @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         UserResponseDTO userResponseDTO = userService.updateUser(updateUserRequestDTO);
         HttpHeaders headers = Util.getRequiredHeaders();

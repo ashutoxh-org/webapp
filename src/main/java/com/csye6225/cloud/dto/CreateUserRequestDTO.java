@@ -23,6 +23,7 @@ public class CreateUserRequestDTO {
     private String password;
 
     @Email(message = "Email should be valid", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @NotBlank(message = "Email is required")
     //Reference: based on https://www.rfc-editor.org/rfc/rfc5321
     private String email;
 

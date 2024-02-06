@@ -2,9 +2,9 @@ package com.csye6225.cloud.advice;
 
 import com.csye6225.cloud.dto.CustomErrorResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,7 +48,7 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {SQLException.class, InternalAuthenticationServiceException.class})
+    @ExceptionHandler(value = {SQLException.class, DataAccessException.class})
     public ResponseEntity<CustomErrorResponseDTO> handleSQLException(Exception ex, WebRequest request) {
         CustomErrorResponseDTO errors = new CustomErrorResponseDTO(
                 LocalDateTime.now(),
