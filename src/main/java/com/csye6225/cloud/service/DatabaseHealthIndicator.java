@@ -14,6 +14,7 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 @Service
 public class DatabaseHealthIndicator implements HealthIndicator {
+
     private final DataSource dataSource;
 
     /**
@@ -30,4 +31,5 @@ public class DatabaseHealthIndicator implements HealthIndicator {
         }
         return Health.down().build();
     }
+
 }

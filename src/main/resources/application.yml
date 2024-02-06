@@ -7,6 +7,8 @@ logging:
       hibernate: ERROR
 
 spring:
+  main:
+      banner-mode: off
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/cloud_native_app_db
@@ -14,10 +16,10 @@ spring:
     password: ENC(qE8+5aohPUInOL3QOZjJEf1V5/hNbt0WuiEoqaoBdcrOtUDwCBvAuVyuryivvHwb)
     hikari:
       connection-timeout: 10000 #10 secs
-      initialization-fail-timeout: -1
-      minimum-idle: 0
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   sql:
     init:
       continue-on-error: true
