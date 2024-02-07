@@ -29,3 +29,4 @@ Notes:
 - Handled: Get 503 when DB is down during authentication/querying the DB instead of 4XX
 - Added Swagger docs for better readability
 - Added Custom Exception and Global Exception handler for cleaner code
+- Added secrets in github environment for DB user and password

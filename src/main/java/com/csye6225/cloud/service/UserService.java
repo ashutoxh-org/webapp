@@ -55,20 +55,14 @@ public class UserService {
         return getUserResponseFromUser(user);
     }
 
-    /**
-     * Update a user
-     *
-     * @param updateUserRequestDTO obj
-     * @return UserResponseDTO user response dto
-     */
-    public UserResponseDTO updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
+
+    public void updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = getUserFromUpdateRequest(updateUserRequestDTO);
         User user = userRepository.findByEmail(updatedUser.getEmail()).get();
         user.setPassword(updatedUser.getPassword());
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
-        user = userRepository.save(user);
-        return getUserResponseFromUser(user);
+        userRepository.save(user);
     }
 
     /**
