@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "User controller", description = "APIs for user related activities")
 @RestController
+@RequestMapping("/v1")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -30,7 +31,7 @@ public class UserController {
      *
      * @return the user
      */
-    @GetMapping(value = "/v1/user/self", produces = "application/json")
+    @GetMapping(value = "/user/self", produces = "application/json")
     @Operation(summary = "Get user")
     @ApiResponse(responseCode = "200", description = "Get user")
     @ApiResponse(responseCode = "400", description = "Bad request")
@@ -47,7 +48,7 @@ public class UserController {
      * @param createUserRequestDTO the create user request dto
      * @return the response entity
      */
-    @PostMapping(value = "/v1/user", produces = "application/json")
+    @PostMapping(value = "/user", produces = "application/json")
     @Operation(summary = "Create user")
     @ApiResponse(responseCode = "201", description = "Create user")
     @ApiResponse(responseCode = "400", description = "Bad request")
@@ -63,15 +64,15 @@ public class UserController {
      * @param updateUserRequestDTO the update user request dto
      * @return the response entity
      */
-    @PutMapping(value = "/v1/user/self", produces = "application/json")
+    @PutMapping(value = "/user/self")
     @Operation(summary = "Update user")
-    @ApiResponse(responseCode = "200", description = "Update user")
+    @ApiResponse(responseCode = "204", description = "No Content")
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "401", description = "Unauthorised")
-    public ResponseEntity<UserResponseDTO> updateUser(@Validated @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
-        UserResponseDTO userResponseDTO = userService.updateUser(updateUserRequestDTO);
+    public ResponseEntity<Void> updateUser(@Validated @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
+        userService.updateUser(updateUserRequestDTO);
         HttpHeaders headers = Util.getRequiredHeaders();
-        return ResponseEntity.ok().headers(headers).body(userResponseDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(headers).build();
     }
 
 }
