@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The type Update user request dto.
+ */
 @Getter
 @Setter
 @Builder

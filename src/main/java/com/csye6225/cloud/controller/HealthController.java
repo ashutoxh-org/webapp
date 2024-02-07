@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/**
+ * The type Health controller.
+ */
 @Tag(name = "Health check", description = "API for health check")
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,13 @@ public class HealthController {
 
     private final DatabaseHealthIndicator databaseHealthIndicator;
 
+    /**
+     * Gets health.
+     *
+     * @param httpServletRequest the http servlet request
+     * @param requestParam       the request param
+     * @return the health
+     */
     @GetMapping(value = "/healthz")
     @Operation(summary = "Check health status", description = "Returns OK if the application is healthy, otherwise returns SERVICE UNAVAILABLE.")
     @ApiResponse(responseCode = "200", description = "Application is healthy")
@@ -38,6 +48,11 @@ public class HealthController {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).headers(headers).build();
     }
 
+    /**
+     * Post health response entity.
+     *
+     * @return the response entity
+     */
     @PostMapping("/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")
@@ -45,6 +60,11 @@ public class HealthController {
         return getMethodNotAllowedResponse();
     }
 
+    /**
+     * Put health response entity.
+     *
+     * @return the response entity
+     */
     @PutMapping("/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")
@@ -52,6 +72,11 @@ public class HealthController {
         return getMethodNotAllowedResponse();
     }
 
+    /**
+     * Patch health response entity.
+     *
+     * @return the response entity
+     */
     @PatchMapping("/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")
@@ -59,6 +84,11 @@ public class HealthController {
         return getMethodNotAllowedResponse();
     }
 
+    /**
+     * Delete health response entity.
+     *
+     * @return the response entity
+     */
     @DeleteMapping("/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")
@@ -66,6 +96,11 @@ public class HealthController {
         return getMethodNotAllowedResponse();
     }
 
+    /**
+     * Head health response entity.
+     *
+     * @return the response entity
+     */
     @RequestMapping(method = RequestMethod.HEAD, value = "/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")
@@ -73,6 +108,11 @@ public class HealthController {
         return getMethodNotAllowedResponse();
     }
 
+    /**
+     * Options health response entity.
+     *
+     * @return the response entity
+     */
     @RequestMapping(method = RequestMethod.OPTIONS, value = "/healthz")
     @Operation(summary = "Check health status")
     @ApiResponse(responseCode = "405", description = "Method not allowed")

@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type User service.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,7 +29,7 @@ public class UserService {
     /**
      * Get requesting user's details
      *
-     * @return UserResponseDTO
+     * @return UserResponseDTO user
      */
     public UserResponseDTO getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -39,7 +42,7 @@ public class UserService {
      * Create a user
      *
      * @param createUserRequestDTO obj
-     * @return UserResponseDTO
+     * @return UserResponseDTO user response dto
      */
     public UserResponseDTO createUser(CreateUserRequestDTO createUserRequestDTO) {
         User user = getUserFromCreateRequest(createUserRequestDTO);
@@ -56,7 +59,7 @@ public class UserService {
      * Update a user
      *
      * @param updateUserRequestDTO obj
-     * @return UserResponseDTO
+     * @return UserResponseDTO user response dto
      */
     public UserResponseDTO updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
         User updatedUser = getUserFromUpdateRequest(updateUserRequestDTO);

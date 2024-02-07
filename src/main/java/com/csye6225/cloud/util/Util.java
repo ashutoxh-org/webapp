@@ -2,6 +2,9 @@ package com.csye6225.cloud.util;
 
 import org.springframework.http.HttpHeaders;
 
+/**
+ * The type Util.
+ */
 public class Util {
 
     private Util() {
@@ -11,7 +14,7 @@ public class Util {
     /**
      * Get standard no-cache or related headers
      *
-     * @return HttpHeaders
+     * @return HttpHeaders required headers
      */
     public static HttpHeaders getRequiredHeaders() {
         HttpHeaders headers = new HttpHeaders();
