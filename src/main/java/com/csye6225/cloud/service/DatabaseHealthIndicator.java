@@ -10,6 +10,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * The type Database health indicator.
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Service

@@ -7,6 +7,9 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * The type User response dto.
+ */
 @Getter
 @Setter
 @Builder

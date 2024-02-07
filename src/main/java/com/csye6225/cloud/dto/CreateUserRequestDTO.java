@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The type Create user request dto.
+ */
 @Getter
 @Setter
 @Builder

@@ -16,9 +16,19 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Custom global exception handler.
+ */
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler {
 
+    /**
+     * Handle generic exception response entity.
+     *
+     * @param ex      the ex
+     * @param request the request
+     * @return the response entity
+     */
     @ExceptionHandler(value = CustomException.class)
     public ResponseEntity<CustomErrorResponseDTO> handleGenericException(Exception ex, WebRequest request) {
         CustomErrorResponseDTO errors = new CustomErrorResponseDTO(
@@ -30,6 +40,13 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handle validation exceptions response entity.
+     *
+     * @param ex      the ex
+     * @param request the request
+     * @return the response entity
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
@@ -48,6 +65,13 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handle sql exception response entity.
+     *
+     * @param ex      the ex
+     * @param request the request
+     * @return the response entity
+     */
     @ExceptionHandler(value = {SQLException.class, DataAccessException.class})
     public ResponseEntity<CustomErrorResponseDTO> handleSQLException(Exception ex, WebRequest request) {
         CustomErrorResponseDTO errors = new CustomErrorResponseDTO(

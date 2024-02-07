@@ -21,10 +21,20 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * The type Security config.
+ */
 @Configuration
 @Slf4j
 public class SecurityConfig {
 
+    /**
+     * Security filter chain security filter chain.
+     *
+     * @param http the http
+     * @return the security filter chain
+     * @throws Exception the exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -38,11 +48,22 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Password encoder password encoder.
+     *
+     * @return the password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * User details service user details service.
+     *
+     * @param userRepository the user repository
+     * @return the user details service
+     */
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> {
