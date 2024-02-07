@@ -15,7 +15,7 @@ spring:
     username: cloud_user
     password: pass@123
     hikari:
-      connection-timeout: 10000 #10 secs
+      connection-timeout: 5000 #5 secs
   jpa:
     hibernate:
       ddl-auto: update
