@@ -28,7 +28,7 @@ cat /opt/homebrew/var/postgresql@14/pg_hba.conf
 ##### Demo in Digital Ocean [Reference](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-centos-8)
 1. Connect to droplet
 ```
-ssh -i /Users/ashutosh/.ssh/digitalocean root@IP_ADDRESS
+ssh -i /Users/ashutosh/.ssh/digitalocean root@167.172.132.68
 ```
 2. Create directories for cleanliness
 ```
@@ -36,16 +36,16 @@ mkdir demo_02 scripts
 ```
 3. Copy scripts to the server
 ```
-scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Downloads/ashutosh_singh_002855013_02.zip root@IP_ADDRESS:~/demo_02/
+scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Downloads/ashutosh_singh_002855013_02.zip root@167.172.132.68:~/demo_02/
 ```
 ```
-scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-postgres.sh root@IP_ADDRESS:~/scripts/
+scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-postgres.sh root@167.172.132.68:~/scripts/
 ```
 ```
-scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-java-maven.sh root@IP_ADDRESS:~/scripts/
+scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-java-maven.sh root@167.172.132.68:~/scripts/
 ```
 ```
-scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-app-and-run.sh root@IP_ADDRESS:~/scripts/
+scp -i /Users/ashutosh/.ssh/digitalocean /Users/ashutosh/Documents/NEU/SEM2/Cloud/webapp/scripts/digital-ocean/setup-app-and-run.sh root@167.172.132.68:~/scripts/
 ```
 4. Give execute permission to the scripts
 ```
