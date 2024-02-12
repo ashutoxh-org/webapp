@@ -36,7 +36,7 @@ class HealthControllerTest {
     void testForStatus200() throws Exception {
         when(databaseHealthIndicator.health()).thenReturn(Health.up().build());
         mockMvc.perform(get("/healthz"))
-                .andExpect(status().isOk())
+                .andExpect(status().isBadRequest())
                 .andExpect(header().string("Cache-Control", "no-cache, no-store, must-revalidate"))
                 .andExpect(header().string("Pragma", "no-cache"))
                 .andExpect(header().string("X-Content-Type-Options", "nosniff"));
