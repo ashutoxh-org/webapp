@@ -7,6 +7,9 @@ logging:
       hibernate: ERROR
 
 spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
   main:
       banner-mode: off
   datasource:

@@ -2,6 +2,7 @@ package com.csye6225.cloud.advice;
 
 import com.csye6225.cloud.dto.CustomErrorResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,17 @@ public class CustomGlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = UnrecognizedPropertyException.class)
+    public ResponseEntity<CustomErrorResponseDTO> handleUnrecognizedPropertyException(Exception ex, WebRequest request) {
+        CustomErrorResponseDTO errors = new CustomErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Attempt to send extra or unauthorised fields",
                 request.getDescription(false)
         );
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);

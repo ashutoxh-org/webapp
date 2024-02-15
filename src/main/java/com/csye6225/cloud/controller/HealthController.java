@@ -28,9 +28,6 @@ public class HealthController {
 
     /**
      * Gets health.
-     *
-     * @param httpServletRequest the http servlet request
-     * @param requestParam       the request param
      * @return the health
      */
     @GetMapping(value = "/healthz")
@@ -38,11 +35,8 @@ public class HealthController {
     @ApiResponse(responseCode = "200", description = "Application is healthy")
     @ApiResponse(responseCode = "400", description = "Bad request")
     @ApiResponse(responseCode = "503", description = "Application is not healthy")
-    public ResponseEntity<Void> getHealth(HttpServletRequest httpServletRequest,
-                                          @Nullable @RequestParam Map<String, String> requestParam) {
+    public ResponseEntity<Void> getHealth() {
         HttpHeaders headers = Util.getRequiredHeaders();
-        if (httpServletRequest.getContentLength() > 0 || (requestParam != null && !requestParam.isEmpty()))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).headers(headers).build();
         if (Status.UP.equals(databaseHealthIndicator.health().getStatus()))
             return ResponseEntity.ok().headers(headers).build();
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).headers(headers).build();

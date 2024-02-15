@@ -3,6 +3,7 @@ package com.csye6225.cloud.controller;
 import com.csye6225.cloud.dto.CreateUserRequestDTO;
 import com.csye6225.cloud.dto.UpdateUserRequestDTO;
 import com.csye6225.cloud.dto.UserResponseDTO;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,6 +52,7 @@ class UserControllerIntegrationTests {
     }
 
     @Test
+    @Order(1) //JVM might pick random test to execute first. Test will fail if update runs before create
     void testCreateAndCheckUser() {
         // Create user
         CreateUserRequestDTO createUserRequest = new CreateUserRequestDTO("Ashutosh", "Singh", "Ashutosh@123", "ashutosh@gmail.com");
@@ -67,6 +69,7 @@ class UserControllerIntegrationTests {
     }
 
     @Test
+    @Order(2)
     void testUpdateAndCheckUser() {
         // Update user
         UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO("Ashu", "Si", "Ashutosh@123");
