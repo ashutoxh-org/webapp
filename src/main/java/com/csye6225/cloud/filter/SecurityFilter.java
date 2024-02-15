@@ -1,4 +1,4 @@
-package com.csye6225.cloud.config;
+package com.csye6225.cloud.filter;
 
 import com.csye6225.cloud.model.User;
 import com.csye6225.cloud.repository.UserRepository;
@@ -26,7 +26,7 @@ import java.util.Collections;
  */
 @Configuration
 @Slf4j
-public class SecurityConfig {
+public class SecurityFilter {
 
     /**
      * Security filter chain security filter chain.
