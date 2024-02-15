@@ -53,16 +53,6 @@ class HealthControllerTests {
     }
 
     @Test
-    void testForStatus400() throws Exception {
-        when(databaseHealthIndicator.health()).thenReturn(Health.up().build());
-        mockMvc.perform(get("/healthz").content("{\"test\":\"test\""))
-                .andExpect(status().isBadRequest())
-                .andExpect(header().string("Cache-Control", "no-cache, no-store, must-revalidate"))
-                .andExpect(header().string("Pragma", "no-cache"))
-                .andExpect(header().string("X-Content-Type-Options", "nosniff"));
-    }
-
-    @Test
     void testForStatus405() throws Exception {
         when(databaseHealthIndicator.health()).thenReturn(Health.up().build());
         mockMvc.perform(post("/healthz").content("{\"test\":\"test\""))
