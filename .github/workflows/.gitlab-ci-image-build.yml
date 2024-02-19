@@ -82,6 +82,7 @@ jobs:
 
       - name: Build Custom Image with Packer
         run: |
+          ls /home/runner/work/webapp/webapp/artifact | cat
           packer build -machine-readable -color=false \
             -var "environment=${ENVIRONMENT}" \
             -var "project_id=${PROJECT_ID}" \
@@ -91,5 +92,5 @@ jobs:
             -var "image_family=${IMAGE_FAMILY}" \
             -var "ssh_username=${SSH_USERNAME}" \
             -var "machine_type=${MACHINE_TYPE}" \
-            -var "artifact_path=../artifact/*.jar" \
+            -var "artifact_path=/home/runner/work/webapp/webapp/artifact/CloudNativeApplication-0.0.1-SNAPSHOT.jar" \
             packer/templates/webapp_server.pkr.hcl
