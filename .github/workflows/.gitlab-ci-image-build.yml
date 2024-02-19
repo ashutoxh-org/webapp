@@ -25,14 +25,14 @@ jobs:
           --health-retries 5
 
     env:
-      ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-      PROJECT_ID: ${{ secrets.PROJECT_ID }}
-      DEPLOYMENT_ZONE: ${{ secrets.DEPLOYMENT_ZONE }}
-      VPC_NETWORK: ${{ secrets.VPC_NETWORK }}
-      SOURCE_IMAGE_FAMILY: ${{ secrets.SOURCE_IMAGE_FAMILY }}
-      IMAGE_FAMILY: ${{ secrets.IMAGE_FAMILY }}
-      SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
-      MACHINE_TYPE: ${{ secrets.MACHINE_TYPE }}
+      ENVIRONMENT: ${{ vars.PKR_DEPLOYMENT_ZONE }}
+      PROJECT_ID: ${{ vars.PKR_PROJECT_ID }}
+      DEPLOYMENT_ZONE: ${{ vars.PKR_DEPLOYMENT_ZONE }}
+      VPC_NETWORK: ${{ vars.PKR_VPC_NETWORK }}
+      SOURCE_IMAGE_FAMILY: ${{ vars.PKR_SOURCE_IMAGE_FAMILY }}
+      IMAGE_FAMILY: ${{ vars.PKR_IMAGE_FAMILY }}
+      SSH_USERNAME: ${{ vars.PKR_SSH_USERNAME }}
+      MACHINE_TYPE: ${{ vars.PKR_MACHINE_TYPE }}
 
     steps:
       - name: Checkout code
