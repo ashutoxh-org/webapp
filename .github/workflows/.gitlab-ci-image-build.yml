@@ -1,0 +1,31 @@
+name: CI for building image
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@v1
+
+      - name: Init, Format and Validate
+        run: packer/scripts/format-validate-packer.sh
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: spring-boot-application
+          path: artifact
+
+      - name: Build Custom Image with Packer
+        run: |
+          packer build -machine-readable -color=false -var-file="packer/environments/dev.pkrvars.hcl" packer/templates/webapp_server.pkr.hcl
+          ls ../artifact/*.jar | cat

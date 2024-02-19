@@ -48,3 +48,9 @@ jobs:
           SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: spring-boot-application
+          path: target/*.jar
