@@ -14,3 +14,13 @@ target/
 ### macOS ###
 # General
 .DS_Store
+
+### Packer ###
+*.pkrvars.*
+
+### Credentials ###
+*/credentials/*
+*.pem
+
+### VS Code ####
+settings.json
