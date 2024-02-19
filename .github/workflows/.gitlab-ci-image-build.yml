@@ -8,6 +8,21 @@ jobs:
   build-image:
     runs-on: ubuntu-latest
     environment: dev
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: cloud_native_app_db
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres is ready
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     env:
       ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
