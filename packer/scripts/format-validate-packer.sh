@@ -11,10 +11,12 @@ packer fmt -recursive packer
 echo "Validating files"
 # Check if running locally or in GitHub Actions
 if [ -z "$GITHUB_ACTIONS" ]; then
-  # If running locally, use -var-file option
+  # If running locally, use -var-file
+  echo "Local validate"
   find . -type f -name "*.pkr.hcl" -exec packer validate -var-file="packer/environments/dev.pkrvars.hcl" {} \;
 else
   # If running in GitHub Actions, use -var options with secrets
+  echo "GitHub Actions validate"
   find . -type f -name "*.pkr.hcl" -exec packer validate \
     -var "environment=${ENVIRONMENT}" \
     -var "project_id=${PROJECT_ID}" \

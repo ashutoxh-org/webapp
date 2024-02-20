@@ -76,7 +76,8 @@ jobs:
 
       - name: Build Custom Image with Packer
         timeout-minutes: 45
-        run: packer build -machine-readable -color=false \
+        run: |
+          PACKER_LOG=1 packer build -machine-readable -color=false \
             -var "environment=${ENVIRONMENT}" \
             -var "project_id=${PROJECT_ID}" \
             -var "deployment_zone=${DEPLOYMENT_ZONE}" \
