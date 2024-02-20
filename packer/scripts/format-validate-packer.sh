@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Initialising Packer.."
 packer init packer/templates/webapp_server.pkr.hcl
 
@@ -7,8 +9,6 @@ echo "Formatting files"
 packer fmt -recursive packer
 
 echo "Validating files"
-# Find all .pkr.hcl files in subdirectories and validate them
-find . -type f -name "*.pkr.hcl" -exec packer validate -var-file="packer/environments/dev.pkrvars.hcl" {} \;
 # Check if running locally or in GitHub Actions
 if [ -z "$GITHUB_ACTIONS" ]; then
   # If running locally, use -var-file option

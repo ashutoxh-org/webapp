@@ -60,12 +60,6 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
           SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
 
-#      - name: Upload Artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: spring-boot-application
-#          path: target/*.jar
-
       - name: Set up Packer
         uses: hashicorp/setup-packer@main
         id: setup
@@ -75,21 +69,14 @@ jobs:
       - name: Init, Format and Validate
         run: packer/scripts/format-validate-packer.sh
 
-#      - name: Download Artifact
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: spring-boot-application
-#          path: artifact
-
       - name: Set up Google Cloud credentials
         run: |
           echo "$GCP_SA_KEY" > /tmp/gcp-key.json
           echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
 
       - name: Build Custom Image with Packer
-        run: |
-          echo "$(pwd)/target"
-          packer build -machine-readable -color=false \
+        timeout-minutes: 45
+        run: packer build -machine-readable -color=false \
             -var "environment=${ENVIRONMENT}" \
             -var "project_id=${PROJECT_ID}" \
             -var "deployment_zone=${DEPLOYMENT_ZONE}" \
