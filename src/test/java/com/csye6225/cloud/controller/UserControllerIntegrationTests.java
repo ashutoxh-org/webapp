@@ -62,7 +62,7 @@ class UserControllerIntegrationTests {
         // Validate by get user
         HttpHeaders headers = createHeaders();
         ResponseEntity<UserResponseDTO> getUser = getUser(headers);
-        assertEquals(HttpStatus.OK, getUser.getStatusCode());
+        assertEquals(HttpStatus.NO_CONTENT, getUser.getStatusCode());
         assertNotNull(getUser.getBody());
         assertEquals(createUserRequest.getFirstName(), getUser.getBody().getFirstName());
         assertEquals(createUserRequest.getLastName(), getUser.getBody().getLastName());
@@ -75,7 +75,7 @@ class UserControllerIntegrationTests {
         UpdateUserRequestDTO updateUserRequestDTO = new UpdateUserRequestDTO("Ashu", "Si", "Ashutosh@123");
         HttpHeaders headers = createHeaders();
         ResponseEntity<UserResponseDTO> updateResponse = updateUser(updateUserRequestDTO, headers);
-        assertEquals(HttpStatus.NO_CONTENT, updateResponse.getStatusCode());
+        assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
 
         // Validate by get user
         ResponseEntity<UserResponseDTO> getUser = getUser(headers);
