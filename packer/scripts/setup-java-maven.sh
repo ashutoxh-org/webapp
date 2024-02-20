@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Ensure the script is run as root or with sudo privileges
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2

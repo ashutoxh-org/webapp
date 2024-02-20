@@ -49,10 +49,14 @@ build {
   provisioner "file" {
     source      = "${var.artifact_path}"
     destination = "/tmp/CloudNativeApplication-0.0.1-SNAPSHOT.jar"
+    max_retries = 5
   }
 
   provisioner "shell" {
-    script = "${path.root}/../scripts/setup-user-privileges.sh"
+    scripts = [
+      "${path.root}/../scripts/setup-user-privileges.sh",
+      "${path.root}/../scripts/setup-disable-selinux.sh"
+    ]
   }
 
   provisioner "file" {
@@ -61,7 +65,7 @@ build {
   }
 
   provisioner "shell" {
-    script = "${path.root}/../scripts/setup-user-privileges.sh"
+    script = "${path.root}/../scripts/setup-systemd-service.sh"
   }
 
 }

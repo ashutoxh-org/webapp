@@ -1,10 +1,12 @@
 #!/bin/bash
 
+set -e
+
 echo "Create /opt/app"
 sudo mkdir -p /opt/app
 
 echo "Move jar from tmp to /opt/app"
-sudo mv /tmp/CloudNativeApplication-0.0.1-SNAPSHOT.jar /opt/app/CloudNativeApplication-0.0.1-SNAPSHOT.jar
+sudo mv /tmp/CloudNativeApplication-0.0.1-SNAPSHOT.jar /opt/app
 
 echo "Create user and group csye6225"
 sudo groupadd -r csye6225
