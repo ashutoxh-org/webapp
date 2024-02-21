@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  lint:
+  java-lint:
     runs-on: ubuntu-latest
     environment: dev
 
@@ -28,3 +28,6 @@ jobs:
 
       - name: Lint
         run: mvn checkstyle:check
+
+      - name: Compile
+        run: mvn clean install -DskipTests
