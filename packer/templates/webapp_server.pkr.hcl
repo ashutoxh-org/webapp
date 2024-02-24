@@ -60,7 +60,7 @@ build {
   }
 
   provisioner "file" {
-    source      = "${path.root}/../services/csye6225.service"
+    source      = "${path.root}/../services/csye6225"
     destination = "/tmp/csye6225.service"
   }
 
