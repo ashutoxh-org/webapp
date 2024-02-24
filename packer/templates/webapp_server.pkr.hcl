@@ -8,7 +8,7 @@ packer {
 }
 
 source "googlecompute" "webapp_builder" {
-  project_id          = var.project_id
+  project_id           = var.project_id
   source_image_family = var.source_image_family
   machine_type        = var.machine_type
   zone                = var.deployment_zone
