@@ -6,10 +6,10 @@ echo "Initialising Packer.."
 packer init packer/templates/webapp_server.pkr.hcl
 
 if [ -z "$GITHUB_ACTIONS" ]; then
-  echo "Skipping formatting"
-else
   echo "Formatting files"
   packer fmt -recursive packer
+else
+  echo "Skipping formatting"
 fi
 
 echo "Validating files"
