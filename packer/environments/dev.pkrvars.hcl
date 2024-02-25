@@ -1,0 +1,8 @@
+environment         = "dev"
+project_id          = "csye-6225-development"
+deployment_zone     = "us-east4-b"
+vpc_network         = "default"
+source_image_family = "centos-stream-8"
+image_family        = "custom-centos-stream-webapp"
+ssh_username        = "packer"
+machine_type        = "e2-small"
