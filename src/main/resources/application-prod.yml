@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: ${ENV_DATABASE_URL}
+    username: ${ENV_DATABASE_USER}
+    password: ${ENV_DATABASE_PASSWORD}

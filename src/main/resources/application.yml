@@ -7,6 +7,8 @@ logging:
       hibernate: ERROR
 
 spring:
+  profiles:
+    default: local
   jackson:
     deserialization:
       fail-on-unknown-properties: true
@@ -14,9 +16,6 @@ spring:
       banner-mode: off
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/cloud_native_app_db
-    username: cloud_user
-    password: pass@123
     hikari:
       connection-timeout: 5000 #5 secs
   jpa:

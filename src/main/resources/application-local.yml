@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cloud_native_app_db
+    username: cloud_user
+    password: pass@123
