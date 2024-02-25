@@ -26,7 +26,7 @@ jobs:
           sudo systemctl start postgresql.service
           sudo -u postgres psql -c "CREATE DATABASE cloud_native_app_db;"
           sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH ENCRYPTED PASSWORD '${{ secrets.DB_PASSWORD }}';"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DB_USERNAME }};"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_native_app_db TO ${{ secrets.DB_USERNAME }};"
 
       - name: Cache Maven packages #Caching before any mvn cmd, this strategy is about optimizing for future runs
         uses: actions/cache@v3
