@@ -8,7 +8,7 @@ packer {
 }
 
 source "googlecompute" "webapp_builder" {
-  project_id           = var.project_id
+  project_id             = var.project_id
   source_image_family = var.source_image_family
   machine_type        = var.machine_type
   zone                = var.deployment_zone
@@ -40,8 +40,7 @@ build {
 
   provisioner "shell" {
     scripts = [
-      "${path.root}/../scripts/setup-java-maven.sh",
-      "${path.root}/../scripts/setup-postgres.sh"
+      "${path.root}/../scripts/setup-java-maven.sh"
     ]
     execute_command = "chmod +x {{.Path}}; sudo {{.Path}}"
   }
@@ -60,8 +59,8 @@ build {
   }
 
   provisioner "file" {
-    source      = "${path.root}/../services/csye6225.service"
-    destination = "/tmp/csye6225.service"
+    source      = "${path.root}/../services/webapp.service"
+    destination = "/tmp/webapp.service"
   }
 
   provisioner "shell" {

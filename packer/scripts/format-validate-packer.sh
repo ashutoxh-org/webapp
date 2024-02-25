@@ -5,15 +5,19 @@ set -e
 echo "Initialising Packer.."
 packer init packer/templates/webapp_server.pkr.hcl
 
-echo "Formatting files"
-packer fmt -recursive packer
+if [ -z "$GITHUB_ACTIONS" ]; then
+  echo "Skipping formatting"
+else
+  echo "Formatting files"
+  packer fmt -recursive packer
+fi
 
 echo "Validating files"
 # Check if running locally or in GitHub Actions
 if [ -z "$GITHUB_ACTIONS" ]; then
   # If running locally, use -var-file
   echo "Local validate"
-  find . -type f -name "*.pkr.hcl" -exec packer validate -var-file="packer/environments/dev.pkrvars.hcl" {} \;
+  packer validate -var-file="packer/environments/dev.pkrvars.hcl" packer/templates/webapp_server.pkr.hcl && echo "Valid config" || exit 1
 else
   if [ -z "$LINT" ]; then
   # If running in GitHub Actions, use -var options with secrets
@@ -27,7 +31,7 @@ else
       -var "image_family=${IMAGE_FAMILY}" \
       -var "ssh_username=${SSH_USERNAME}" \
       -var "machine_type=${MACHINE_TYPE}" \
-      {} \;
+      {} \; || exit 1
   else
     echo "GitHub Actions validate during lint"
     mkdir -p target
@@ -41,7 +45,7 @@ else
       -var "image_family=${IMAGE_FAMILY}" \
       -var "ssh_username=${SSH_USERNAME}" \
       -var "machine_type=${MACHINE_TYPE}" \
-      {} \;
+      {} \; || exit 1
     rm -rf target
   fi
 fi

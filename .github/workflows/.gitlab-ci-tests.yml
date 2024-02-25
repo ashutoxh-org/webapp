@@ -8,21 +8,6 @@ jobs:
   compile-and-test:
     runs-on: ubuntu-latest
     environment: dev
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: cloud_native_app_db
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres is ready
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -34,6 +19,15 @@ jobs:
           java-version: '21'
           distribution: 'temurin' # GitHub doesn't support OpenJDK directly
 
+      - name: Install PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "CREATE DATABASE cloud_native_app_db;"
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH ENCRYPTED PASSWORD '${{ secrets.DB_PASSWORD }}';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE users TO ${{ secrets.DB_USERNAME }};"
+
       - name: Cache Maven packages #Caching before any mvn cmd, this strategy is about optimizing for future runs
         uses: actions/cache@v3
         with:
@@ -41,10 +35,5 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} #new cache entry is created whenever there are changes to pom.xml, ensuring dependencies are up-to-date
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build and test with Maven
-        run: mvn -B clean verify
-        env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/cloud_native_app_db
-          SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
+      - name: Build and test
+        run: mvn clean install
