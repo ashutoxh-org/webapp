@@ -9,7 +9,7 @@ if [ -z "$GITHUB_ACTIONS" ]; then
   echo "Formatting files"
   packer fmt -recursive packer
 else
-  echo "Skipping formatting"
+  packer fmt -check packer/templates/webapp_server.pkr.hcl && echo "Valid format" || exit 1
 fi
 
 echo "Validating files"
