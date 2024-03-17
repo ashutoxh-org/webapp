@@ -17,3 +17,12 @@ sudo chown csye6225:csye6225 /opt/app/CloudNativeApplication-0.0.1-SNAPSHOT.jar
 
 echo "Give necessary permission to jar"
 sudo chmod 644 /opt/app/CloudNativeApplication-0.0.1-SNAPSHOT.jar
+
+echo "Create log folder"
+sudo mkdir -p /var/log/webapp
+
+echo "Change owner of log folder to csye6225"
+sudo chown csye6225:csye6225 /var/log/webapp
+
+echo "Give necessary permission to the folder"
+sudo chmod 755 /var/log/webapp

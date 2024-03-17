@@ -1,9 +1,12 @@
 logging:
   level:
     root: ERROR
+    com:
+      csye6225:
+        cloud: ERROR
     org:
       springframework:
-        web: INFO
+        web: ERROR
       hibernate: ERROR
 
 spring:
@@ -21,7 +24,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
-  sql:
-    init:
-      continue-on-error: true
+    show-sql: false

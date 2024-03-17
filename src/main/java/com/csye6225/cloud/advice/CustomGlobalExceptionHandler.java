@@ -2,7 +2,10 @@ package com.csye6225.cloud.advice;
 
 import com.csye6225.cloud.dto.CustomErrorResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
+import com.csye6225.cloud.util.Util;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,8 @@ import java.util.Map;
  */
 @RestControllerAdvice
 public class CustomGlobalExceptionHandler {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
     /**
      * Handle generic exception response entity.
@@ -49,6 +54,7 @@ public class CustomGlobalExceptionHandler {
                 "Attempt to send extra or unauthorised fields",
                 request.getDescription(false)
         );
+        LOGGER.error("Attempt to send extra or unauthorised fields for user {}", Util.getUserEmail());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -74,6 +80,7 @@ public class CustomGlobalExceptionHandler {
                 request.getDescription(false),
                 errors
         );
+        LOGGER.error("Field validation Error for user {}", Util.getUserEmail());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -92,6 +99,7 @@ public class CustomGlobalExceptionHandler {
                 "Service Unavailable",
                 request.getDescription(false)
         );
+        LOGGER.error("Exception while trying to connect to the database: {}", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
