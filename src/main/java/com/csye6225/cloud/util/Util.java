@@ -1,6 +1,8 @@
 package com.csye6225.cloud.util;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * The type Util.
@@ -25,6 +27,13 @@ public class Util {
         headers.add("X-Content-Type-Options", "nosniff");
 
         return headers;
+    }
+
+    public static String getUserEmail(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(null != authentication)
+            return authentication.getName();
+        return "";
     }
 
 }

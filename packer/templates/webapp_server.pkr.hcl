@@ -67,6 +67,10 @@ build {
     script = "${path.root}/../scripts/setup-systemd-service.sh"
   }
 
+  provisioner "shell" {
+    script = "${path.root}/../scripts/setup-ops-agent.sh"
+  }
+
 }
 
 variable "environment" {

@@ -6,8 +6,10 @@ import com.csye6225.cloud.dto.UserResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
 import com.csye6225.cloud.model.User;
 import com.csye6225.cloud.repository.UserRepository;
+import com.csye6225.cloud.util.Util;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,9 +22,8 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserService {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -35,6 +36,7 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
         Optional<User> user = userRepository.findByEmail(email);
+        LOGGER.debug("User {} fetched", user.get().getEmail());
         return getUserResponseFromUser(user.get());
     }
 
@@ -48,10 +50,11 @@ public class UserService {
         User user = getUserFromCreateRequest(createUserRequestDTO);
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            log.error("User already exists {}", existingUser);
-            throw new CustomException("User already exists");
+            LOGGER.error("User {} already exists", existingUser.get().getEmail());
+            throw new CustomException("User " + existingUser.get().getEmail() + " already exists");
         }
         user = userRepository.save(user);
+        LOGGER.debug("User {} created", user.getEmail());
         return getUserResponseFromUser(user);
     }
 
@@ -63,6 +66,7 @@ public class UserService {
         user.setFirstName(updatedUser.getFirstName());
         user.setLastName(updatedUser.getLastName());
         userRepository.save(user);
+        LOGGER.debug("User {} updated", user.getEmail());
     }
 
     /**
@@ -104,8 +108,7 @@ public class UserService {
      * @return User
      */
     private User getUserFromUpdateRequest(UpdateUserRequestDTO updateUserRequestDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+        String email = Util.getUserEmail();
         return User.builder()
                 .firstName(updateUserRequestDTO.getFirstName())
                 .lastName(updateUserRequestDTO.getLastName())
