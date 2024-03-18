@@ -1,0 +1,17 @@
+logging:
+  receivers:
+    webapp-receiver:
+      type: files
+      include_paths:
+        - '/var/log/webapp/webapp.log'
+      record_log_file_path: true
+  processors:
+    webapp-processor:
+      type: parse_json
+      time_key: time
+      time_format: "%Y-%m-%d %H:%M:%S.%L"
+  service:
+    pipelines:
+      default_pipeline:
+        receivers: [webapp-receiver]
+        processors: [ webapp-processor ]

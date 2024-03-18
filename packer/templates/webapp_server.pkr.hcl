@@ -67,6 +67,11 @@ build {
     script = "${path.root}/../scripts/setup-systemd-service.sh"
   }
 
+  provisioner "file" {
+    source      = "${path.root}/../ops-config/ops-agent-config.yaml"
+    destination = "/tmp/ops-agent-config.yaml"
+  }
+
   provisioner "shell" {
     script = "${path.root}/../scripts/setup-ops-agent.sh"
   }
