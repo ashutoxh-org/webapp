@@ -4,14 +4,14 @@
 
     <springProfile name="prod">
         <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>dummylog/webapp.log</file>
+            <file>/var/log/webapp/webapp.log</file>
             <layout class="ch.qos.logback.contrib.json.classic.JsonLayout" id="jsonLayout">
                 <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter"/>
                 <timestampFormat>yyyy-MM-dd HH:mm:ss.SSS</timestampFormat>
                 <appendLineSeparator>true</appendLineSeparator>
             </layout>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>dummylog/webapp.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>/var/log/webapp/webapp.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <maxHistory>2</maxHistory>
             </rollingPolicy>
         </appender>
