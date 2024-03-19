@@ -29,9 +29,9 @@ public class Util {
         return headers;
     }
 
-    public static String getUserEmail(){
+    public static String getUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(null != authentication)
+        if (null != authentication)
             return authentication.getName();
         return "";
     }

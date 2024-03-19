@@ -31,6 +31,7 @@ import java.util.Collections;
 public class SecurityFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityFilter.class);
+
     /**
      * Security filter chain security filter chain.
      *
@@ -81,6 +82,18 @@ public class SecurityFilter {
      * To handle 503 when database is down during authentication
      */
     public static class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+        private static String getEmailFromRequest(HttpServletRequest request) {
+            String header = request.getHeader("Authorization");
+            if (header != null && header.startsWith("Basic ")) {
+                String base64Credentials = header.substring("Basic ".length()).trim();
+                byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
+                String credentials = new String(credDecoded, StandardCharsets.UTF_8);
+                final String[] values = credentials.split(":", 2);
+                return values[0]; // username
+            }
+            return "";
+        }
+
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response,
                              AuthenticationException authException) throws IOException {
@@ -91,17 +104,6 @@ public class SecurityFilter {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
                 LOGGER.error("User {} not authorised due to {}", getEmailFromRequest(request), authException.getMessage());
             }
-        }
-        private static String getEmailFromRequest(HttpServletRequest request){
-            String header = request.getHeader("Authorization");
-            if (header != null && header.startsWith("Basic ")) {
-                String base64Credentials = header.substring("Basic ".length()).trim();
-                byte[] credDecoded = Base64.getDecoder().decode(base64Credentials);
-                String credentials = new String(credDecoded, StandardCharsets.UTF_8);
-                final String[] values = credentials.split(":", 2);
-                return values[0]; // username
-            }
-            return "";
         }
     }
 
