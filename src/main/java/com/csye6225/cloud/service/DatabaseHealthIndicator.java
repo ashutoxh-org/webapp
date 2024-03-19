@@ -28,6 +28,7 @@ public class DatabaseHealthIndicator implements HealthIndicator {
      */
     @Override
     public Health health() {
+        LOGGER.info("Health check called");
         try (Connection ignored = dataSource.getConnection()) {
             return Health.up().build();
         } catch (SQLException e) {

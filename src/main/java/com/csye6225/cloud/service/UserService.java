@@ -33,8 +33,10 @@ public class UserService {
      * @return UserResponseDTO user
      */
     public UserResponseDTO getUser() {
+        LOGGER.info("Get user called");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
+        LOGGER.debug("Attempting to create user {}", email);
         Optional<User> user = userRepository.findByEmail(email);
         LOGGER.debug("User {} fetched", user.get().getEmail());
         return getUserResponseFromUser(user.get());
@@ -47,10 +49,12 @@ public class UserService {
      * @return UserResponseDTO user response dto
      */
     public UserResponseDTO createUser(CreateUserRequestDTO createUserRequestDTO) {
+        LOGGER.info("Create user called");
+        LOGGER.debug("Attempting to create user {}", createUserRequestDTO.getEmail());
         User user = getUserFromCreateRequest(createUserRequestDTO);
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            LOGGER.error("User {} already exists", existingUser.get().getEmail());
+            LOGGER.warn("User {} already exists", existingUser.get().getEmail());
             throw new CustomException("User " + existingUser.get().getEmail() + " already exists");
         }
         user = userRepository.save(user);
@@ -60,7 +64,9 @@ public class UserService {
 
 
     public void updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
+        LOGGER.info("Update user called");
         User updatedUser = getUserFromUpdateRequest(updateUserRequestDTO);
+        LOGGER.debug("Attempting to update user {}", updatedUser.getEmail());
         User user = userRepository.findByEmail(updatedUser.getEmail()).get();
         user.setPassword(updatedUser.getPassword());
         user.setFirstName(updatedUser.getFirstName());
