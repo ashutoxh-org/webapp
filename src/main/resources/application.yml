@@ -3,7 +3,7 @@ logging:
     root: ERROR
     com:
       csye6225:
-        cloud: ERROR
+        cloud: DEBUG
     org:
       springframework:
         web: ERROR

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 /**
  * The type Security config.
@@ -71,6 +70,7 @@ public class SecurityFilter {
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> {
+            LOGGER.debug("Validating auth token details");
             User user = userRepository.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), Collections.emptyList());

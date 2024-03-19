@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class HealthController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HealthController.class);
     private final DatabaseHealthIndicator databaseHealthIndicator;
 
     /**
@@ -112,6 +115,7 @@ public class HealthController {
 
     private ResponseEntity<Void> getMethodNotAllowedResponse() {
         HttpHeaders headers = Util.getRequiredHeaders();
+        LOGGER.error("Unauthorized request for /healthz");
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).headers(headers).build();
     }
 

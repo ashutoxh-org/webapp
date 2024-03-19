@@ -80,7 +80,7 @@ public class CustomGlobalExceptionHandler {
                 request.getDescription(false),
                 errors
         );
-        LOGGER.error("Field validation Error for user {}", Util.getUserEmail());
+        LOGGER.warn("Field validation Error(s) {} for user {}", errors.entrySet(), Util.getUserEmail());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
