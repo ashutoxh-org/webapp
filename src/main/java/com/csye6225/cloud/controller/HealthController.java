@@ -27,6 +27,7 @@ public class HealthController {
 
     /**
      * Gets health.
+     *
      * @return the health
      */
     @GetMapping(value = "/healthz")

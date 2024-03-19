@@ -36,7 +36,7 @@ public class UserService {
         LOGGER.info("Get user called");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-        LOGGER.debug("Attempting to create user {}", email);
+        LOGGER.debug("Attempting to get user {}", email);
         Optional<User> user = userRepository.findByEmail(email);
         LOGGER.debug("User {} fetched", user.get().getEmail());
         return getUserResponseFromUser(user.get());
