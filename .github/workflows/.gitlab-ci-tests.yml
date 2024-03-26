@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
 
+    env:
+      GCP_SA_KEY : ${{ secrets.GCLOUD_CREDENTIALS }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -34,6 +37,11 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} #new cache entry is created whenever there are changes to pom.xml, ensuring dependencies are up-to-date
           restore-keys: ${{ runner.os }}-m2
+
+      - name: Set up Google Cloud credentials
+        run: |
+          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
 
       - name: Build and test
         run: mvn clean install
