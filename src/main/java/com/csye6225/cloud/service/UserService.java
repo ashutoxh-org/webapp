@@ -1,6 +1,7 @@
 package com.csye6225.cloud.service;
 
 import com.csye6225.cloud.dto.CreateUserRequestDTO;
+import com.csye6225.cloud.dto.EmailVerificationResponseDTO;
 import com.csye6225.cloud.dto.UpdateUserRequestDTO;
 import com.csye6225.cloud.dto.UserResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
@@ -97,7 +98,7 @@ public class UserService {
      * @param token the token
      * @return the user response dto
      */
-    public UserResponseDTO verifyUser(String token) {
+    public EmailVerificationResponseDTO verifyUser(String token) {
         LOGGER.debug("Attempting to verify user with token {}", token);
         String email = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8).split(":")[0];
         Optional<User> user = userRepository.findByEmailAndTokenToVerify(email, token);
@@ -109,7 +110,7 @@ public class UserService {
             user.get().setVerified(true);
             userRepository.save(user.get());
             LOGGER.debug("User {} verified", user.get().getEmail());
-            return getUserResponseFromUser(user.get());
+            return new EmailVerificationResponseDTO(true, "User has been verified successfully");
         }
         if(user.isPresent()){
             LOGGER.debug("User {} already verified", user.get().getEmail());
