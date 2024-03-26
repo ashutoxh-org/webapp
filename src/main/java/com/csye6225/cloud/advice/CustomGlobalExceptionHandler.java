@@ -2,6 +2,7 @@ package com.csye6225.cloud.advice;
 
 import com.csye6225.cloud.dto.CustomErrorResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
+import com.csye6225.cloud.exception.EmailVerificationException;
 import com.csye6225.cloud.util.Util;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.slf4j.Logger;
@@ -46,6 +47,31 @@ public class CustomGlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handle mail verification exception response entity.
+     *
+     * @param ex      the ex
+     * @param request the request
+     * @return the response entity
+     */
+    @ExceptionHandler(value = EmailVerificationException.class)
+    public ResponseEntity<CustomErrorResponseDTO> handleMailVerificationException(Exception ex, WebRequest request) {
+        CustomErrorResponseDTO errors = new CustomErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errors, HttpStatus.FORBIDDEN);
+    }
+
+    /**
+     * Handle unrecognized property exception response entity.
+     *
+     * @param ex      the ex
+     * @param request the request
+     * @return the response entity
+     */
     @ExceptionHandler(value = UnrecognizedPropertyException.class)
     public ResponseEntity<CustomErrorResponseDTO> handleUnrecognizedPropertyException(Exception ex, WebRequest request) {
         CustomErrorResponseDTO errors = new CustomErrorResponseDTO(

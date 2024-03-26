@@ -8,6 +8,7 @@ import com.csye6225.cloud.util.Util;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class UserController {
     @Operation(summary = "Get user")
     @ApiResponse(responseCode = "200", description = "Get user")
     @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "403", description = "Unverified user")
     @ApiResponse(responseCode = "401", description = "Unauthorised")
     public ResponseEntity<UserResponseDTO> getUser() {
         UserResponseDTO userResponseDTO = userService.getUser();
@@ -68,6 +70,7 @@ public class UserController {
     @Operation(summary = "Update user")
     @ApiResponse(responseCode = "204", description = "No Content")
     @ApiResponse(responseCode = "400", description = "Bad request")
+    @ApiResponse(responseCode = "403", description = "Unverified user")
     @ApiResponse(responseCode = "401", description = "Unauthorised")
     public ResponseEntity<Void> updateUser(@Validated @RequestBody UpdateUserRequestDTO updateUserRequestDTO) {
         userService.updateUser(updateUserRequestDTO);
@@ -75,4 +78,19 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).headers(headers).build();
     }
 
+    /**
+     * Verify user response entity.
+     *
+     * @param token the token
+     * @return the response entity
+     */
+    @GetMapping(value = "/user/verify", produces = "application/json")
+    @Operation(summary = "Verify user")
+    @ApiResponse(responseCode = "200", description = "User verified")
+    @ApiResponse(responseCode = "400", description = "Bad request")
+    public ResponseEntity<UserResponseDTO> verifyUser(@RequestParam String token) {
+        UserResponseDTO userResponseDTO = userService.verifyUser(token);
+        HttpHeaders headers = Util.getRequiredHeaders();
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(userResponseDTO);
+    }
 }

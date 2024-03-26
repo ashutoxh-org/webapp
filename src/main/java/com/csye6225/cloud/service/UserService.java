@@ -4,6 +4,7 @@ import com.csye6225.cloud.dto.CreateUserRequestDTO;
 import com.csye6225.cloud.dto.UpdateUserRequestDTO;
 import com.csye6225.cloud.dto.UserResponseDTO;
 import com.csye6225.cloud.exception.CustomException;
+import com.csye6225.cloud.exception.EmailVerificationException;
 import com.csye6225.cloud.model.User;
 import com.csye6225.cloud.repository.UserRepository;
 import com.csye6225.cloud.util.Util;
@@ -15,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Optional;
 
 /**
@@ -26,6 +30,7 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PublisherService publisherService;
 
     /**
      * Get requesting user's details
@@ -38,8 +43,11 @@ public class UserService {
         String email = authentication.getName();
         LOGGER.debug("Attempting to get user {}", email);
         Optional<User> user = userRepository.findByEmail(email);
-        LOGGER.debug("User {} fetched", user.get().getEmail());
-        return getUserResponseFromUser(user.get());
+        if(validateUserVerification(user.get())) {
+            LOGGER.debug("User {} fetched", user.get().getEmail());
+            return getUserResponseFromUser(user.get());
+        }
+        return null;
     }
 
     /**
@@ -58,21 +66,57 @@ public class UserService {
             throw new CustomException("User " + existingUser.get().getEmail() + " already exists");
         }
         user = userRepository.save(user);
+        publisherService.prepareToPublish(user.getEmail());
         LOGGER.debug("User {} created", user.getEmail());
         return getUserResponseFromUser(user);
     }
 
 
+    /**
+     * Update user.
+     *
+     * @param updateUserRequestDTO the update user request dto
+     */
     public void updateUser(UpdateUserRequestDTO updateUserRequestDTO) {
         LOGGER.info("Update user called");
         User updatedUser = getUserFromUpdateRequest(updateUserRequestDTO);
         LOGGER.debug("Attempting to update user {}", updatedUser.getEmail());
-        User user = userRepository.findByEmail(updatedUser.getEmail()).get();
-        user.setPassword(updatedUser.getPassword());
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        userRepository.save(user);
-        LOGGER.debug("User {} updated", user.getEmail());
+        Optional<User> user = userRepository.findByEmail(updatedUser.getEmail());
+        if(validateUserVerification(user.get())) {
+            user.get().setPassword(updatedUser.getPassword());
+            user.get().setFirstName(updatedUser.getFirstName());
+            user.get().setLastName(updatedUser.getLastName());
+            userRepository.save(user.get());
+            LOGGER.debug("User {} updated", user.get().getEmail());
+        }
+    }
+
+    /**
+     * Verify user user response dto.
+     *
+     * @param token the token
+     * @return the user response dto
+     */
+    public UserResponseDTO verifyUser(String token) {
+        LOGGER.debug("Attempting to verify user with token {}", token);
+        String email = new String(Base64.getDecoder().decode(token), StandardCharsets.UTF_8).split(":")[0];
+        Optional<User> user = userRepository.findByEmailAndTokenToVerify(email, token);
+        if(user.isPresent() && LocalDateTime.now().isAfter(user.get().getTokenExpiryTime())){
+            LOGGER.error("User {} failed to verify before the stipulated time", user.get().getEmail());
+            throw new EmailVerificationException("User " + user.get().getEmail() + " failed to verify before the stipulated time");
+        }
+        if(user.isPresent() && !user.get().isVerified()) {
+            user.get().setVerified(true);
+            userRepository.save(user.get());
+            LOGGER.debug("User {} verified", user.get().getEmail());
+            return getUserResponseFromUser(user.get());
+        }
+        if(user.isPresent()){
+            LOGGER.debug("User {} already verified", user.get().getEmail());
+            throw new CustomException("User already verified");
+        }
+        LOGGER.debug("User token {} verification failed", token);
+        throw new CustomException("Invalid URl");
     }
 
     /**
@@ -121,6 +165,19 @@ public class UserService {
                 .password(passwordEncoder.encode(updateUserRequestDTO.getPassword()))
                 .email(email)
                 .build();
+    }
+
+    private boolean validateUserVerification(User user){
+        if(user.isVerified()){
+            return true;
+        }
+        if(null != user.getTokenExpiryTime() && LocalDateTime.now().isAfter(user.getTokenExpiryTime())){
+            LOGGER.error("User {} failed to verify before the stipulated time", user.getEmail());
+            throw new EmailVerificationException("User " + user.getEmail() + " failed to verify before the stipulated time");
+        } else {
+            LOGGER.error("Verify through the link sent by email first");
+            throw new EmailVerificationException("Verify through the link sent by email first");
+        }
     }
 
 }
