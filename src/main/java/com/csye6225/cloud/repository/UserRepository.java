@@ -20,4 +20,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
      */
     Optional<User> findByEmail(String email);
 
+    /**
+     * Find by email and verify token optional.
+     *
+     * @param email       the email
+     * @param tokenToVerify the verify token
+     * @return the optional
+     */
+    Optional<User> findByEmailAndTokenToVerify(String email, String tokenToVerify);
 }

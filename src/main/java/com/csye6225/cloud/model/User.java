@@ -44,6 +44,10 @@ public class User implements Serializable {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Setter
+    @Column(nullable = false)
+    private boolean isVerified;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime accountCreated;
@@ -51,6 +55,10 @@ public class User implements Serializable {
     @LastModifiedDate
     @Column(nullable = false)
     private LocalDateTime accountUpdated;
+
+    private String tokenToVerify;
+
+    private LocalDateTime tokenExpiryTime;
 
     @Override
     public boolean equals(Object o) {

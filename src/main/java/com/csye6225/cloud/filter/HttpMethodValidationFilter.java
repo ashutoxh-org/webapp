@@ -21,14 +21,16 @@ public class HttpMethodValidationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if ("GET".equals(request.getMethod()) && (request.getContentLength() > 0 || request.getQueryString() != null)) {
+        if ("GET".equals(request.getMethod()) &&
+                !(request.getRequestURI().contains("/user/verify")) &&
+                        (request.getContentLength() > 0 || request.getQueryString() != null)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Request");
             LOGGER.error("Bad GET request due to body, query params or header being present");
             return;
         }
         if (("PUT".equals(request.getMethod()) || "POST".equals(request.getMethod())) && request.getQueryString() != null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Request");
-            LOGGER.error("Bad PUT request due to query params being present");
+            LOGGER.error("Bad PUT/POST request due to query params being present");
             return;
         }
         filterChain.doFilter(request, response);

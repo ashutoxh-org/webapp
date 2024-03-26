@@ -4,8 +4,10 @@ logging:
     com:
       csye6225:
         cloud: DEBUG
+    com.google.cloud.pubsub: DEBUG
     org:
       springframework:
+        cloud.gcp.pubsub: DEBUG
         web: ERROR
       hibernate: ERROR
 
@@ -25,3 +27,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  cloud:
+    gcp:
+      project-id: csye-6225-development
+
+publisher:
+    topic: verify_email
