@@ -46,6 +46,11 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} #new cache entry is created whenever there are changes to pom.xml, ensuring dependencies are up-to-date
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Set up Google Cloud credentials
+        run: |
+          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
+
       - name: Build and test
         run: mvn clean install
 
@@ -57,11 +62,6 @@ jobs:
 
       - name: Init, Format and Validate
         run: packer/scripts/format-validate-packer.sh
-
-      - name: Set up Google Cloud credentials
-        run: |
-          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
 
       - name: Build Custom Image with Packer
         timeout-minutes: 45
