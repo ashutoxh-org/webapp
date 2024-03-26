@@ -1,6 +1,7 @@
 package com.csye6225.cloud.controller;
 
 import com.csye6225.cloud.dto.CreateUserRequestDTO;
+import com.csye6225.cloud.dto.EmailVerificationResponseDTO;
 import com.csye6225.cloud.dto.UpdateUserRequestDTO;
 import com.csye6225.cloud.dto.UserResponseDTO;
 import com.csye6225.cloud.service.UserService;
@@ -88,9 +89,9 @@ public class UserController {
     @Operation(summary = "Verify user")
     @ApiResponse(responseCode = "200", description = "User verified")
     @ApiResponse(responseCode = "400", description = "Bad request")
-    public ResponseEntity<UserResponseDTO> verifyUser(@RequestParam String token) {
-        UserResponseDTO userResponseDTO = userService.verifyUser(token);
+    public ResponseEntity<EmailVerificationResponseDTO> verifyUser(@RequestParam String token) {
+        EmailVerificationResponseDTO emailVerificationResponseDTO = userService.verifyUser(token);
         HttpHeaders headers = Util.getRequiredHeaders();
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(userResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(emailVerificationResponseDTO);
     }
 }
