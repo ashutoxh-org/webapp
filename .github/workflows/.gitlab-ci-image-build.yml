@@ -127,7 +127,8 @@ jobs:
 
       - name: Create a new instance template
         run: |
-          gcloud compute instance-templates create "webapp-instance-template-cicd-${{ env.TERRAFORM_SUFFIX }}" \
+          echo "NEW_SUFFIX=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 3)" >> $GITHUB_ENV
+          gcloud compute instance-templates create "webapp-instance-template-cicd-${{ env.NEW_SUFFIX }}" \
             --project=${{ env.PROJECT_ID }} \
             --machine-type=${{ env.MACHINE_TYPE }} \
             --network-interface="subnet=webapp-${{ env.TERRAFORM_SUFFIX }}" \
@@ -145,13 +146,13 @@ jobs:
       - name: Update the instance group to use the new template
         run: |
           gcloud compute instance-groups managed set-instance-template webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
-            --template="webapp-instance-template-cicd-${{ env.TERRAFORM_SUFFIX }}" \
+            --template="webapp-instance-template-cicd-${{ env.NEW_SUFFIX }}" \
             --region=${{ env.DEPLOYMENT_REGION }}
 
       - name: Start the rolling update
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
-            --version=template="webapp-instance-template-cicd-${{ env.TERRAFORM_SUFFIX }}" \
+            --version=template="webapp-instance-template-cicd-${{ env.NEW_SUFFIX }}" \
             --zone=${{ env.DEPLOYMENT_ZONE }} \
             --type=opportunistic \
             --minimal-action=recreate \
