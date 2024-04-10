@@ -11,14 +11,10 @@ errorHandler() {
 trap errorHandler ERR
 
 # Fetch database connection details from metadata service
-DB_HOST=${DB_HOST}
-echo "$DB_HOST" >> /var/log/startup-script.log
-DB_NAME=${DB_NAME}
-echo "$DB_NAME" >> /var/log/startup-script.log
-DB_USER=${DB_USER}
-echo "$DB_USER" >> /var/log/startup-script.log
-DB_PASS=${DB_PASS}
-echo "$DB_PASS" >> /var/log/startup-script.log
+DB_HOST=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/db_host -H "Metadata-Flavor: Google")
+DB_NAME=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db_name" -H "Metadata-Flavor: Google")
+DB_USER=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db_user" -H "Metadata-Flavor: Google")
+DB_PASS=$(curl "http://metadata.google.internal/computeMetadata/v1/instance/attributes/db_password" -H "Metadata-Flavor: Google")
 
 cat <<EOF > /etc/webapp.env
 ENV_DATABASE_URL=jdbc:postgresql://$DB_HOST/$DB_NAME
