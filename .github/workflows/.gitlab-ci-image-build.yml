@@ -127,7 +127,7 @@ jobs:
 
       - name: Create a new instance template
         run: |
-          NEW_SUFFIX=$(head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 3)
+          NEW_SUFFIX=$(head /dev/urandom | tr -dc 'a-z0-9' | head -c 3)
           echo "NEW_SUFFIX=$NEW_SUFFIX" >> $GITHUB_ENV
           echo "NEW_SUFFIX=$NEW_SUFFIX"
           gcloud compute instance-templates create "webapp-instance-template-cicd-$NEW_SUFFIX" \
