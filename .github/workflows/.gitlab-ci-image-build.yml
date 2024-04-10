@@ -153,11 +153,9 @@ jobs:
 
       - name: Start the rolling update
         run: |
-          gcloud compute instance-groups managed rolling-action start-update webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
-            --version=template="webapp-instance-template-cicd-${{ env.NEW_SUFFIX }}" \
+          gcloud compute instance-groups managed rolling-action replace webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
             --zone=${{ env.DEPLOYMENT_ZONE }} \
-            --type=opportunistic \
-            --minimal-action=recreate \
+            --replacement-method=recreate
             --max-surge=1 \
             --max-unavailable=0
 
