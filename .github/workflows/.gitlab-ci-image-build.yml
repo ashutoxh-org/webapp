@@ -146,7 +146,7 @@ jobs:
         run: |
           gcloud compute instance-groups managed set-instance-template webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
             --template="webapp-instance-template-cicd-${{ env.TERRAFORM_SUFFIX }}" \
-            --zone=${{ env.DEPLOYMENT_ZONE }}
+            --region=${{ env.DEPLOYMENT_REGION }}
 
       - name: Start the rolling update
         run: |
