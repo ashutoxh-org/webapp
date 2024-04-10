@@ -121,7 +121,7 @@ jobs:
               --format="csv[no-heading](name,creationTimestamp)" \
               | sort -t, -k2,2r \
               | head -n 1 \
-              | cut -d, -f1)'
+              | cut -d, -f1)
           echo "LATEST_IMAGE_ID=$LATEST_IMAGE_ID" 
           echo "LATEST_IMAGE_ID=$LATEST_IMAGE_ID" >> $GITHUB_ENV
 
