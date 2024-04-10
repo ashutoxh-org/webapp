@@ -12,14 +12,23 @@ trap errorHandler ERR
 
 # Fetch database connection details from metadata service
 DB_HOST=${DB_HOST}
+echo "$DB_HOST" >> /var/log/startup-script.log
 DB_NAME=${DB_NAME}
+echo "$DB_NAME" >> /var/log/startup-script.log
 DB_USER=${DB_USER}
+echo "$DB_USER" >> /var/log/startup-script.log
 DB_PASS=${DB_PASS}
+echo "$DB_PASS" >> /var/log/startup-script.log
 
 cat <<EOF > /etc/webapp.env
 ENV_DATABASE_URL=jdbc:postgresql://$DB_HOST/$DB_NAME
 ENV_DATABASE_USER=$DB_USER
 ENV_DATABASE_PASSWORD=$DB_PASS
+EOF
+cat <<EOF > /etc/webapp2.env
+ENV_DATABASE_URL=jdbc:postgresql://${DB_HOST}/${DB_NAME}
+ENV_DATABASE_USER=${DB_USER}
+ENV_DATABASE_PASSWORD=${DB_PASS}
 EOF
 echo "Created env file" >> /var/log/startup-script.log
 
