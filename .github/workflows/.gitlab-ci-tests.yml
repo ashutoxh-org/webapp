@@ -1,47 +1,47 @@
-#name: CI for lint, compile and test
-#
-#on:
-#  pull_request:
-#    branches: [main]
-#
-#jobs:
-#  compile-and-test:
-#    runs-on: ubuntu-latest
-#    environment: dev
-#
-#    env:
-#      GCP_SA_KEY : ${{ secrets.GCLOUD_CREDENTIALS }}
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Set up JDK 21
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '21'
-#          distribution: 'temurin' # GitHub doesn't support OpenJDK directly
-#
-#      - name: Install PostgreSQL
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -y postgresql postgresql-contrib
-#          sudo systemctl start postgresql.service
-#          sudo -u postgres psql -c "CREATE DATABASE cloud_native_app_db;"
-#          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH ENCRYPTED PASSWORD '${{ secrets.DB_PASSWORD }}';"
-#          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_native_app_db TO ${{ secrets.DB_USERNAME }};"
-#
-#      - name: Cache Maven packages #Caching before any mvn cmd, this strategy is about optimizing for future runs
-#        uses: actions/cache@v3
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} #new cache entry is created whenever there are changes to pom.xml, ensuring dependencies are up-to-date
-#          restore-keys: ${{ runner.os }}-m2
-#
-#      - name: Set up Google Cloud credentials
-#        run: |
-#          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
-#          echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
-#
-#      - name: Build and test
-#        run: mvn clean install
+name: CI for lint, compile and test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  compile-and-test:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      GCP_SA_KEY : ${{ secrets.GCLOUD_CREDENTIALS }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin' # GitHub doesn't support OpenJDK directly
+
+      - name: Install PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql postgresql-contrib
+          sudo systemctl start postgresql.service
+          sudo -u postgres psql -c "CREATE DATABASE cloud_native_app_db;"
+          sudo -u postgres psql -c "CREATE USER ${{ secrets.DB_USERNAME }} WITH ENCRYPTED PASSWORD '${{ secrets.DB_PASSWORD }}';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE cloud_native_app_db TO ${{ secrets.DB_USERNAME }};"
+
+      - name: Cache Maven packages #Caching before any mvn cmd, this strategy is about optimizing for future runs
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }} #new cache entry is created whenever there are changes to pom.xml, ensuring dependencies are up-to-date
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Set up Google Cloud credentials
+        run: |
+          echo "$GCP_SA_KEY" > /tmp/gcp-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$(realpath /tmp/gcp-key.json)" >> $GITHUB_ENV
+
+      - name: Build and test
+        run: mvn clean install
