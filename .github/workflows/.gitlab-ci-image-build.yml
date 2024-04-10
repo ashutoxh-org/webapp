@@ -157,7 +157,7 @@ jobs:
             --region=${{ env.DEPLOYMENT_REGION }} \
             --replacement-method=recreate \
             --max-surge=0 \
-            --max-unavailable=1
+            --max-unavailable=3
 
       - name: Wait for the update to complete
         run: |
