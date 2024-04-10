@@ -134,6 +134,7 @@ jobs:
             --project=${{ env.PROJECT_ID }} \
             --machine-type=${{ env.MACHINE_TYPE }} \
             --network-interface="subnet=webapp-${{ env.TERRAFORM_SUFFIX }}" \
+            --metadata=db_host=${{ env.DB_HOST }},db_name=${{ env.DB_NAME }},db_password=${{ env.DB_PASS }},db_user=${{ env.DB_USER }} \
             --metadata-from-file startup-script=packer/scripts/startup-script-instance-template.sh \
             --can-ip-forward \
             --maintenance-policy=MIGRATE \
@@ -157,7 +158,7 @@ jobs:
             --region=${{ env.DEPLOYMENT_REGION }} \
             --replacement-method=recreate \
             --max-surge=0 \
-            --max-unavailable=3
+            --max-unavailable=30%
 
       - name: Wait for the update to complete
         run: |
