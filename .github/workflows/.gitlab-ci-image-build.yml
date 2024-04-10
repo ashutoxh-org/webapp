@@ -140,7 +140,6 @@ jobs:
             --region=${{ env.DEPLOYMENT_REGION }} \
             --tags=webapp-firewall-app,webapp-firewall-http,webapp-firewall-https,webapp-firewall-ssh \
             --create-disk="auto-delete=yes,boot=yes,device-name=persistent-disk-0,image=projects/${{ env.PROJECT_ID }}/global/images/${{ env.LATEST_IMAGE_ID }},kms-key=projects/${{ env.PROJECT_ID }}/locations/${{ env.DEPLOYMENT_REGION }}/keyRings/cmek-kry-ring-${{ env.TERRAFORM_SUFFIX }}/cryptoKeys/vm-key-${{ env.TERRAFORM_SUFFIX }},mode=rw,size=20,type=pd-balanced" \
-            --local-ssd="interface=SCSI" \
             --reservation-affinity=any
 
       - name: Update the instance group to use the new template
