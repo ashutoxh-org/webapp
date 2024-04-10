@@ -156,7 +156,7 @@ jobs:
           gcloud compute instance-groups managed rolling-action replace webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
             --region=${{ env.DEPLOYMENT_REGION }} \
             --replacement-method=recreate
-            --max-surge=1 \
+            --max-surge=0 \
             --max-unavailable=0
 
       - name: Wait for the update to complete
