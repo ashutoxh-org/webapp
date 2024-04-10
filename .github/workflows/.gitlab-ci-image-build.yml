@@ -163,4 +163,4 @@ jobs:
         run: |
           gcloud compute instance-groups managed wait-until --stable webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
             --region=${{ env.DEPLOYMENT_REGION }} \
-            --timeout=30m
+            --timeout=600
