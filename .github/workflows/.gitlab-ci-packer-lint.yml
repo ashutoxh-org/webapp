@@ -1,35 +1,35 @@
-#name: CI for packer lint
-#
-#on:
-#  pull_request:
-#    branches: [main]
-#
-#jobs:
-#  packer-lint:
-#    runs-on: ubuntu-latest
-#    environment: dev
-#
-#    env:
-#      LINT: true
-#      ENVIRONMENT: ${{ vars.PKR_DEPLOYMENT_ZONE }}
-#      PROJECT_ID: ${{ vars.PKR_PROJECT_ID }}
-#      DEPLOYMENT_ZONE: ${{ vars.PKR_DEPLOYMENT_ZONE }}
-#      VPC_NETWORK: ${{ vars.PKR_VPC_NETWORK }}
-#      SOURCE_IMAGE_FAMILY: ${{ vars.PKR_SOURCE_IMAGE_FAMILY }}
-#      IMAGE_FAMILY: ${{ vars.PKR_IMAGE_FAMILY }}
-#      SSH_USERNAME: ${{ vars.PKR_SSH_USERNAME }}
-#      MACHINE_TYPE: ${{ vars.PKR_MACHINE_TYPE }}
-#      GCP_SA_KEY : ${{ secrets.GCLOUD_CREDENTIALS }}
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#
-#      - name: Set up Packer
-#        uses: hashicorp/setup-packer@main
-#        id: setup
-#        with:
-#          version: latest
-#
-#      - name: Init, Format and Validate
-#        run: packer/scripts/format-validate-packer.sh
+name: CI for packer lint
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  packer-lint:
+    runs-on: ubuntu-latest
+    environment: dev
+
+    env:
+      LINT: true
+      ENVIRONMENT: ${{ vars.PKR_DEPLOYMENT_ZONE }}
+      PROJECT_ID: ${{ vars.PKR_PROJECT_ID }}
+      DEPLOYMENT_ZONE: ${{ vars.PKR_DEPLOYMENT_ZONE }}
+      VPC_NETWORK: ${{ vars.PKR_VPC_NETWORK }}
+      SOURCE_IMAGE_FAMILY: ${{ vars.PKR_SOURCE_IMAGE_FAMILY }}
+      IMAGE_FAMILY: ${{ vars.PKR_IMAGE_FAMILY }}
+      SSH_USERNAME: ${{ vars.PKR_SSH_USERNAME }}
+      MACHINE_TYPE: ${{ vars.PKR_MACHINE_TYPE }}
+      GCP_SA_KEY : ${{ secrets.GCLOUD_CREDENTIALS }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Packer
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: latest
+
+      - name: Init, Format and Validate
+        run: packer/scripts/format-validate-packer.sh
