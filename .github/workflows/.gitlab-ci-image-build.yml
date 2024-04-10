@@ -112,18 +112,6 @@ jobs:
         id: setup-cloud-sdk
         uses: 'google-github-actions/setup-gcloud@v2'
 
-      - name: Dummy
-        run: |
-          echo "$DB_HOST"
-          echo "$DB_NAME"
-          echo "$DB_USER"
-          echo "$DB_PASS"
-          echo ${{ secrets.GCLOUD_DB_HOST }}
-          echo ${{ secrets.GCLOUD_DB_NAME }}
-          echo ${{ secrets.GCLOUD_DB_USER }}
-          echo ${{ secrets.GCLOUD_DB_PASS }}
-      
-
       - name: Get the latest image
         id: get-latest-image
         run: |
