@@ -103,7 +103,11 @@ jobs:
       VM_KEY: ${{ secrets.GCLOUD_VM_KEY }}
 
     steps:
-      - id: 'auth'
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Authenticate GCP
+        id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCLOUD_CREDENTIALS }}'
