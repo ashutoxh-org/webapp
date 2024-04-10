@@ -115,8 +115,13 @@ jobs:
       - name: Get the latest image
         id: get-latest-image
         run: |
-          LATEST_IMAGE_ID=$(gcloud compute images list --project=${{ env.PROJECT_ID }} --filter="family:custom-centos-stream-webapp" --format="get(name)" --limit=1)
-          echo "Latest image ID: $LATEST_IMAGE_ID"
+          LATEST_IMAGE_ID=$(gcloud compute images list \
+              --project=${{ env.PROJECT_ID }} \
+              --filter="family:custom-centos-stream-webapp" \
+              --format="csv[no-heading](name,creationTimestamp)" \
+              | sort -t, -k2,2r \
+              | head -n 1 \
+              | cut -d, -f1)
           echo "LATEST_IMAGE_ID=$LATEST_IMAGE_ID" >> $GITHUB_ENV
 
       - name: Create a new instance template
@@ -124,35 +129,39 @@ jobs:
           gcloud compute instance-templates create "webapp-instance-template-cicd-$(date +%Y%m%d-%H%M%S)" \
             --project=${{ env.PROJECT_ID }} \
             --machine-type=${{ env.MACHINE_TYPE }} \
-            --network=${{ env.VPC }} \
-            --network-interface=network-tier=PREMIUM,subnet=${{ env.SUBNET }} \
-            --metadata-from-file startup-script=packer/scripts/startup-script-instance-template.sh  \
-            --can-ip-forward --maintenance-policy=MIGRATE --provisioning-model=STANDARD \
+            --network-interface="network-tier=PREMIUM,subnet=${{ env.SUBNET }}" \
+            --metadata-from-file startup-script=packer/scripts/startup-script-instance-template.sh \
+            --can-ip-forward \
+            --maintenance-policy=MIGRATE \
+            --provisioning-model=STANDARD \
             --service-account=${{ env.VM_SA }} \
             --scopes=https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write \
             --region=${{ env.DEPLOYMENT_REGION }} \
             --tags=webapp-firewall-app,webapp-firewall-http,webapp-firewall-https,webapp-firewall-ssh \
-            --create-disk=auto-delete=yes,boot=yes,device-name=persistent-disk-0,image=projects/${{ env.PROJECT_ID }}/global/images/$LATEST_IMAGE_ID,kms-key=projects/${{ env.PROJECT_ID }}/locations/${{ env.DEPLOYMENT_REGION }}/keyRings/${{ env.KEY_RING }}/cryptoKeys/${{ env.VM_KEY }},mode=rw,size=20,type=pd-balanced \
-            --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+            --create-disk="auto-delete=yes,boot=yes,device-name=persistent-disk-0,image=projects/${{ env.PROJECT_ID }}/global/images/${{ env.LATEST_IMAGE_ID }},kms-key=projects/${{ env.PROJECT_ID }}/locations/${{ env.DEPLOYMENT_REGION }}/keyRings/${{ env.KEY_RING }}/cryptoKeys/${{ env.VM_KEY }},mode=rw,size=20,type=pd-balanced" \
+            --no-shielded-secure-boot \
+            --shielded-vtpm \
+            --shielded-integrity-monitoring \
+            --reservation-affinity=any
 
-#      - name: Update the instance group to use the new template
-#        run: |
-#          gcloud compute instance-groups managed set-instance-template ${{ env.MIG_NAME }} \
-#            --template="webapp-template-$(date +%s)" \
-#            --zone=${{ env.DEPLOYMENT_ZONE }}
-#
-#      - name: Start the rolling update
-#        run: |
-#          gcloud compute instance-groups managed rolling-action start-update ${{ env.MIG_NAME }} \
-#            --version=template="webapp-template-$(date +%s)" \
-#            --zone=${{ env.DEPLOYMENT_ZONE }} \
-#            --type=opportunistic \
-#            --minimal-action=recreate \
-#            --max-surge=1 \
-#            --max-unavailable=0
-#
-#      - name: Wait for the update to complete
-#        run: |
-#          gcloud compute instance-groups managed wait-until --stable ${{ env.MIG_NAME }} \
-#            --zone=${{ env.DEPLOYMENT_ZONE }} \
-#            --timeout=30m
+    #      - name: Update the instance group to use the new template
+    #        run: |
+    #          gcloud compute instance-groups managed set-instance-template ${{ env.MIG_NAME }} \
+    #            --template="webapp-template-$(date +%s)" \
+    #            --zone=${{ env.DEPLOYMENT_ZONE }}
+    #
+    #      - name: Start the rolling update
+    #        run: |
+    #          gcloud compute instance-groups managed rolling-action start-update ${{ env.MIG_NAME }} \
+    #            --version=template="webapp-template-$(date +%s)" \
+    #            --zone=${{ env.DEPLOYMENT_ZONE }} \
+    #            --type=opportunistic \
+    #            --minimal-action=recreate \
+    #            --max-surge=1 \
+    #            --max-unavailable=0
+    #
+    #      - name: Wait for the update to complete
+    #        run: |
+    #          gcloud compute instance-groups managed wait-until --stable ${{ env.MIG_NAME }} \
+    #            --zone=${{ env.DEPLOYMENT_ZONE }} \
+    #            --timeout=30m
