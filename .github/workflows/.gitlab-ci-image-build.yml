@@ -130,10 +130,11 @@ jobs:
           NEW_SUFFIX=$(head /dev/urandom | tr -dc 'a-z0-9' | head -c 3)
           echo "NEW_SUFFIX=$NEW_SUFFIX" >> $GITHUB_ENV
           echo "NEW_SUFFIX=$NEW_SUFFIX"
+          SUBNET=$(gcloud compute networks subnets list --filter="name=webapp-${{ env.TERRAFORM_SUFFIX }}" --project=${{ env.PROJECT_ID }} --regions=${{ env.DEPLOYMENT_REGION }} --format="value(selfLink)")
           gcloud compute instance-templates create "webapp-instance-template-cicd-$NEW_SUFFIX" \
             --project=${{ env.PROJECT_ID }} \
             --machine-type=${{ env.MACHINE_TYPE }} \
-            --network-interface="subnet=webapp-${{ env.TERRAFORM_SUFFIX }}" \
+            --network-interface="subnet=$SUBNET" \
             --metadata=db_host=${{ env.DB_HOST }},db_name=${{ env.DB_NAME }},db_password='${{ env.DB_PASS }}',db_user=${{ env.DB_USER }} \
             --metadata-from-file startup-script=packer/scripts/startup-script-instance-template.sh \
             --can-ip-forward \
