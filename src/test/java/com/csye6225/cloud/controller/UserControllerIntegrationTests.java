@@ -80,11 +80,11 @@ class UserControllerIntegrationTests {
         }
     }
     private String getPostUrl() {
-        return "http://localhost:" + port + "/v1/user";
+        return "http://localhost:" + port + "/v2/user";
     }
 
     private String getPutAndGetUrl() {
-        return "http://localhost:" + port + "/v1/user/self";
+        return "http://localhost:" + port + "/v2/user/self";
     }
 
     private HttpHeaders createHeaders() {
