@@ -161,8 +161,8 @@ jobs:
             --region=${{ env.DEPLOYMENT_REGION }} \
             --type=proactive \
             --version=template="webapp-instance-template-cicd-${{ env.NEW_SUFFIX }}" \
-            --max-unavailable=3 \
-            --max-surge=3 \
+            --max-unavailable=1 \
+            --max-surge=1 \
 
       - name: Wait for the update to complete
         run: |
