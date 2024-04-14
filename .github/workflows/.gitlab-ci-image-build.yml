@@ -1,12 +1,12 @@
 name: CI for building image
 
-#on:
-#  push:
-#    branches: [main]
-
 on:
-  pull_request:
+  push:
     branches: [main]
+
+#on:
+#  pull_request:
+#    branches: [main]
 
 jobs:
   build-image:
@@ -168,4 +168,4 @@ jobs:
         run: |
           gcloud compute instance-groups managed wait-until --stable webapp-instance-group-manager-${{ env.TERRAFORM_SUFFIX }} \
             --region=${{ env.DEPLOYMENT_REGION }} \
-            --timeout=900
+            --timeout=1200
