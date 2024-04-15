@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Tag(name = "User controller", description = "APIs for user related activities")
 @RestController
-@RequestMapping("/v2")
+@RequestMapping("/v7")
 @RequiredArgsConstructor
 public class UserController {
 
